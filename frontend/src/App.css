@@ -1,0 +1,159 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app {
+  min-height: 100vh;
+  background: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  padding: 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 700px;
+  background: #1e293b;
+  border-radius: 18px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  border: 1px solid #334155;
+}
+
+.title {
+  font-size: 2.3rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin-top: 10px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.form {
+  margin-top: 40px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 10px;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.input {
+  width: 100%;
+  padding: 16px 18px;
+  background: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: 0.25s;
+}
+
+.input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+}
+
+.input::placeholder {
+  color: #64748b;
+}
+
+.deploy-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: #2563eb;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.deploy-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+.deploy-btn:active {
+  transform: scale(0.98);
+}
+
+.status {
+  margin-top: 30px;
+  padding: 15px 18px;
+  background: #0f172a;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+}
+
+.status span {
+  color: #22c55e;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 25px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+}
+
+.deployment-url {
+  margin-top: 20px;
+  padding: 12px 16px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.deployment-url a {
+  color: #60a5fa;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.deployment-url a:hover {
+  color: #93c5fd;
+}
+
+.copy-btn {
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  transition: 0.2s;
+}
+
+.copy-btn:hover {
+  color: white;
+  transform: scale(1.1);
+}
