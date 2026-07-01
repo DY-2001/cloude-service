@@ -21,7 +21,9 @@ function App() {
         (env) => env.key.trim() && env.value.trim(),
       );
 
-      const res = await fetch("http://localhost:5000/deploy", {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
+      const res = await fetch(`${backendUrl}/deploy`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
