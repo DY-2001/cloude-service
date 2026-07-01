@@ -16,6 +16,7 @@ const crypto = require("crypto");
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.set("trust proxy", 1);
 
 /////////////////////////////////////////////////////////////////////////
 app.get("/", (req, res) => {
