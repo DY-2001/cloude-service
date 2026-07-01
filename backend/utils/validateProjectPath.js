@@ -8,9 +8,9 @@ function validateProjectPath(clonePath, dockerfilePath) {
     throw new Error("Invalid Dockerfile path.");
   }
 
-  const dockerfilePath = path.join(projectPath, "Dockerfile");
+  const dockerfileFullPath = path.join(projectPath, "Dockerfile");
 
-  if (!fs.existsSync(dockerfilePath)) {
+  if (!fs.existsSync(dockerfileFullPath)) {
     throw new Error("Dockerfile not found.");
   }
 
