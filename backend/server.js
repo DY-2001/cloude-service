@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const cloneRepository = require("./utils/cloneRepository");
+const validateProjectPath = require("./utils/validateProjectPath");
+const buildDockerImage = require("./utils/buildDockerImage");
 const crypto = require("crypto");
 
 
@@ -20,42 +22,53 @@ app.get("/", (req, res) => {
 });
 
 app.post("/deploy", async (req, res) => {
-    const { githubUrl } = req.body;
+    try {
+        const { githubUrl, dockerfilePath } = req.body;
 
-    if (!isValidGithubRepoUrl(githubUrl)) {
-        return res.status(400).json({
-            message: "Invalid GitHub repository URL"
+        if (!isValidGithubRepoUrl(githubUrl)) {
+            return res.status(400).json({
+                message: "Invalid GitHub repository URL"
+            });
+        }
+
+        const { owner, repo } = getOwnerAndRepo(githubUrl);
+
+        const response = await fetch(
+            `https://api.github.com/repos/${owner}/${repo}`
+        );
+
+        if (response.status === 404) {
+            return res.status(404).json({
+                message: "Repository not found"
+            });
+        }
+
+        const deploymentId = crypto.randomBytes(6).toString("hex");
+        const folderName = `${deploymentId}_${repo}`;
+
+        const destination = path.join(
+            __dirname,
+            "..",
+            "deployments",
+            folderName
+        );
+        await cloneRepository(githubUrl, destination);
+        
+        const projectPath = validateProjectPath(
+            destination,
+            dockerfilePath || ""
+        );
+        await buildDockerImage(folderName, projectPath);
+        
+        res.json({
+            message: "Repository cloned successfully"
+        });
+
+    } catch (err) {
+        res.status(400).json({
+            message: err.message
         });
     }
-
-    console.log(githubUrl);
-    const { owner, repo } = getOwnerAndRepo(githubUrl);
-
-    const response = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}`
-    );
-
-    if (response.status === 404) {
-        return res.status(404).json({
-            message: "Repository not found"
-        });
-    }
-
-    const deploymentId = crypto.randomBytes(6).toString("hex");
-    const folderName = `${deploymentId}_${repo}`;
-
-    const destination = path.join(
-        __dirname,
-        "..",
-        "deployments",
-        folderName
-    );
-
-    await cloneRepository(githubUrl, destination);
-
-    res.json({
-        message: "Repository cloned successfully"
-    });
 });
 
 

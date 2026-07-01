@@ -3,6 +3,7 @@ import "./App.css";
 
 function App() {
   const [githubUrl, setGithubUrl] = useState("");
+  const [dockerfilePath, setDockerfilePath] = useState("");
   const [loading, setLoading] = useState(false);
   const [deploymentUrl, setDeploymentUrl] = useState("");
 
@@ -16,7 +17,7 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ githubUrl }),
+        body: JSON.stringify({ githubUrl, dockerfilePath }),
       });
 
       const data = await res.json();
@@ -41,6 +42,18 @@ function App() {
             placeholder="https://github.com/user/repository"
             value={githubUrl}
             onChange={(e) => setGithubUrl(e.target.value)}
+          />
+
+          <label className="label">
+            Dockerfile Path ( Leave empty if Dockerfile is in the root directory )
+          </label>
+
+          <input
+            className="input"
+            type="text"
+            placeholder="(optional) Path to Dockerfile Ex: backend, app/backend"
+            value={dockerfilePath}
+            onChange={(e) => setDockerfilePath(e.target.value)}
           />
 
           <button className="deploy-btn" onClick={deploy} disabled={loading}>
