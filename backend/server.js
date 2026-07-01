@@ -22,6 +22,19 @@ app.get("/", (req, res) => {
   res.send("Backend is running ...");
 });
 
+const deploymentRateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 5,
+
+    message: {
+        success: false,
+        message: "Too many deployment requests. Please try again later."
+    },
+
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 app.post("/deploy", deploymentRateLimiter, async (req, res) => {
   try {
     const { githubUrl, dockerfilePath, port, envVariables } = req.body;
@@ -89,18 +102,7 @@ app.post("/deploy", deploymentRateLimiter, async (req, res) => {
 });
 
 //////////////////////////////////////////////////////////////////////////////////
-const deploymentRateLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 5,
 
-    message: {
-        success: false,
-        message: "Too many deployment requests. Please try again later."
-    },
-
-    standardHeaders: true,
-    legacyHeaders: false,
-});
 
 ///////////////////////////////////////////////////////////////////////////////////
 function isValidGithubRepoUrl(url) {
