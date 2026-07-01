@@ -9,6 +9,7 @@ const startDeployment = require("./utils/startDeployment");
 const reloadNginx = require("./utils/reloadNginx");
 const appendNginxConfig = require("./utils/appendNginxConfig");
 const getTunnelUrl = require("./utils/getTunnelUrl");
+const { rateLimit } = require("express-rate-limit");
 const crypto = require("crypto");
 
 //////////////////////////////////////////////////////////////////////////
@@ -21,7 +22,7 @@ app.get("/", (req, res) => {
   res.send("Backend is running ...");
 });
 
-app.post("/deploy", async (req, res) => {
+app.post("/deploy", deploymentRateLimiter, async (req, res) => {
   try {
     const { githubUrl, dockerfilePath, port, envVariables } = req.body;
 
@@ -85,6 +86,20 @@ app.post("/deploy", async (req, res) => {
       message: err.message,
     });
   }
+});
+
+//////////////////////////////////////////////////////////////////////////////////
+const deploymentRateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 5,
+
+    message: {
+        success: false,
+        message: "Too many deployment requests. Please try again later."
+    },
+
+    standardHeaders: true,
+    legacyHeaders: false,
 });
 
 ///////////////////////////////////////////////////////////////////////////////////
