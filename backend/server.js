@@ -6,6 +6,9 @@ const validateProjectPath = require("./utils/validateProjectPath");
 const buildDockerImage = require("./utils/buildDockerImage");
 const generateComposeFile = require("./utils/generateComposeFile");
 const startDeployment = require("./utils/startDeployment");
+const reloadNginx = require("./utils/reloadNginx");
+const appendNginxConfig = require("./utils/appendNginxConfig");
+const getTunnelUrl = require("./utils/getTunnelUrl");
 const crypto = require("crypto");
 
 //////////////////////////////////////////////////////////////////////////
@@ -69,10 +72,12 @@ app.post("/deploy", async (req, res) => {
     appendNginxConfig(containerName, port);
 
     await reloadNginx();
+    const tunnelUrl = await getTunnelUrl();
 
     res.json({
       success: true,
       message: "Deployment completed successfully",
+      tunnelUrl,
     });
   } catch (err) {
     res.status(400).json({

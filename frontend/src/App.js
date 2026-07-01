@@ -17,18 +17,32 @@ function App() {
     setError("");
 
     try {
+      const filteredEnvVariables = envVariables.filter(
+        (env) => env.key.trim() && env.value.trim(),
+      );
+
       const res = await fetch("http://localhost:5000/deploy", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ githubUrl, dockerfilePath }),
+        body: JSON.stringify({
+          githubUrl,
+          dockerfilePath,
+          port,
+          envVariables: filteredEnvVariables,
+        }),
       });
 
       const data = await res.json();
 
       if (data.success) {
         setDeploymentUrl(data.url);
+
+        setGithubUrl("");
+        setDockerfilePath("");
+        setPort("");
+        setEnvVariables([{ key: "", value: "" }]);
       } else {
         setError(data.message);
       }
