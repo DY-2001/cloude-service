@@ -6,26 +6,35 @@ function App() {
   const [dockerfilePath, setDockerfilePath] = useState("");
   const [loading, setLoading] = useState(false);
   const [deploymentUrl, setDeploymentUrl] = useState("");
+  const [error, setError] = useState("");
 
-  const deploy = async () => {
-    setLoading(true);
-    setDeploymentUrl("");
+ const deploy = async () => {
+  setLoading(true);
+  setDeploymentUrl("");
+  setError("");
 
-    try {
-      const res = await fetch("http://localhost:5000/deploy", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ githubUrl, dockerfilePath }),
-      });
+  try {
+    const res = await fetch("http://localhost:5000/deploy", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ githubUrl, dockerfilePath }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
+
+    if (data.success) {
       setDeploymentUrl(data.url);
-    } finally {
-      setLoading(false);
+    } else {
+      setError(data.message);
     }
-  };
+  } catch {
+    setError("Unable to connect to the server.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="app">
@@ -61,20 +70,26 @@ function App() {
           </button>
 
           {deploymentUrl && (
-            <div className="deployment-url">
-              <a href={deploymentUrl} target="_blank" rel="noopener noreferrer">
-                {deploymentUrl}
-              </a>
+  <div className="deployment-url">
+    <a href={deploymentUrl} target="_blank" rel="noopener noreferrer">
+      {deploymentUrl}
+    </a>
 
-              <button
-                className="copy-btn"
-                onClick={() => navigator.clipboard.writeText(deploymentUrl)}
-                title="Copy URL"
-              >
-                📋
-              </button>
-            </div>
-          )}
+    <button
+      className="copy-btn"
+      onClick={() => navigator.clipboard.writeText(deploymentUrl)}
+      title="Copy URL"
+    >
+      📋
+    </button>
+  </div>
+)}
+
+{error && (
+  <div className="error-box">
+    {error}
+  </div>
+)}
         </div>
       </div>
     </div>
