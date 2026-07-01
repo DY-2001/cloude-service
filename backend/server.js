@@ -87,11 +87,12 @@ app.post("/deploy", deploymentRateLimiter, async (req, res) => {
 
     await reloadNginx();
     const tunnelUrl = await getTunnelUrl();
+    const publicUrl = `${tunnelUrl}/${containerName}/`;
 
     res.json({
       success: true,
       message: "Deployment completed successfully",
-      tunnelUrl,
+      publicUrl,
     });
   } catch (err) {
     res.status(400).json({

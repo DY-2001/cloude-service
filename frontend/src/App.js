@@ -37,7 +37,7 @@ function App() {
       const data = await res.json();
 
       if (data.success) {
-        setDeploymentUrl(data.url);
+        setDeploymentUrl(data.publicUrl);
 
         setGithubUrl("");
         setDockerfilePath("");
