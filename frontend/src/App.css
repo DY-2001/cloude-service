@@ -170,3 +170,77 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+
+/* Required field */
+.required {
+  color: #ff4d4f;
+}
+
+/* ---------- Environment Variables ---------- */
+
+.env-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.env-input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.env-input:focus {
+  border-color: #4f8cff;
+  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.15);
+}
+
+/* ---------- Add Variable Button ---------- */
+
+.add-env-btn {
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  padding: 12px;
+  border: 2px dashed #4f8cff;
+  border-radius: 12px;
+  background: #f7faff;
+  color: #4f8cff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.add-env-btn:hover {
+  background: #4f8cff;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* ---------- Remove Button ---------- */
+
+.remove-env-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 10px;
+  background: #ffeded;
+  color: #e53935;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.2s;
+  flex-shrink: 0;
+}
+
+.remove-env-btn:hover {
+  background: #e53935;
+  color: white;
+  transform: scale(1.05);
+}
