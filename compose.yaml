@@ -1,0 +1,24 @@
+services:
+  cloud-service:
+    build:
+      context: ./backend
+
+    container_name: cloud-service
+
+    restart: unless-stopped
+
+    environment:
+      PORT: 5000
+
+    volumes:
+      - ./deployments:/app/deployments
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/will-robinson/projects/infrastructure/nginx:/home/will-robinson/projects/infrastructure/nginx
+      - /home/will-robinson/projects/infrastructure/cloudflare-url.txt:/app/cloudflare-url.txt:ro
+
+    networks:
+      - server-network
+
+networks:
+  server-network:
+    external: true
