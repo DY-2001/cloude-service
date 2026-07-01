@@ -55,7 +55,6 @@ app.post("/deploy", async (req, res) => {
     const containerName = folderName;
 
     await buildDockerImage(imageName, projectPath);
-    await buildDockerImage(imageName, projectPath);
 
     generateComposeFile(
       destination,
@@ -66,6 +65,10 @@ app.post("/deploy", async (req, res) => {
     );
 
     await startDeployment(destination);
+
+    appendNginxConfig(containerName, port);
+
+    await reloadNginx();
 
     res.json({
       success: true,
