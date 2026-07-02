@@ -14,7 +14,6 @@ services:
       - ./deployments:/app/deployments
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/will-robinson/projects/infrastructure/nginx:/home/will-robinson/projects/infrastructure/nginx
-      - /home/will-robinson/projects/infrastructure/cloudflare-url.txt:/app/cloudflare-url.txt:ro
 
     networks:
       - server-network
